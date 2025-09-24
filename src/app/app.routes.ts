@@ -38,7 +38,7 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    // redirectTo: localeRedirect
-    loadComponent: () => import('./pages/404/404-component').then((m) => m.NotFoundComponent),
+    redirectTo: localeRedirect,
+    // loadComponent: () => import('./pages/404/404-component').then((m) => m.NotFoundComponent),
   },
 ];
