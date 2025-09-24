@@ -20,8 +20,6 @@ export class LocaleService {
     this.currentLang = lang;
     import(`./locales/${lang}.json`)
       .then((module) => {
-        console.log(module.default);
-
         this.translations$.next(module.default || module);
         this.loadedLang = lang;
       })

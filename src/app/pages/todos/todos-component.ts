@@ -10,7 +10,7 @@ import { UserContext } from '../../user.context';
   styleUrl: './todos-component.css',
   standalone: true,
 })
-export class TodosComponent implements OnInit {
+export class TodosComponent {
   @Input() resolveFoo?: string; // My resolved data
   @Input() isSomething?: boolean; // true
   @Input() todoId?: string; // 1
@@ -19,13 +19,7 @@ export class TodosComponent implements OnInit {
 
   protected readonly message = 'This is a todos component';
 
-  constructor(public userCtx: UserContext) {
-    // console.log(this.locale);
-    
-  }
-  ngOnInit(): void {
-    // console.log(this.locale);
-  }
+  constructor(public userCtx: UserContext) {}
 
   getMessage = computed<string>(
     () => `Message: ${this.message}, Input: ${''} ${this.userCtx.user()}`

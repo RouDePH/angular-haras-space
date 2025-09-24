@@ -17,16 +17,6 @@ export class DynamicFormComponent {
   );
   payLoad = '';
   onSubmit(from: FormGroupDirective) {
-    console.log(from.value);
-    
-    // const data = new FormData(form.value);   
-    // console.log(form.value);
-
-    // for(const a of data.entries()){
-    //   console.log(a);
-      
-    // }
-     
     this.payLoad = JSON.stringify(this.form().getRawValue());
   }
 }

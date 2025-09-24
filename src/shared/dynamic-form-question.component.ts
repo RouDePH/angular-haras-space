@@ -14,8 +14,6 @@ export class DynamicFormQuestionComponent {
   }
 
   get errorMessage() {
-    console.log(this.form().controls[this.question().key]);
-    
     return JSON.stringify(this.form().controls[this.question().key].errors);
   }
 }
