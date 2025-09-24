@@ -1,5 +1,6 @@
 import {
   ApplicationConfig,
+  CSP_NONCE,
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection,
 } from '@angular/core';
@@ -12,6 +13,6 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes, withComponentInputBinding()),
-    // { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy },
+    { provide: CSP_NONCE, useValue: 'CSP_NONCE_INJECTION' },
   ],
 };
