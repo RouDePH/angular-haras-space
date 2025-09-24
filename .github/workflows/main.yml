@@ -29,7 +29,7 @@ jobs:
         run: |
           npm run build
       - name: Add nonce to modulepreload links
-        run: ./csp-nonces.sh
+        run: chmod +x csp-nonces.sh & ./csp-nonces.sh
       - name: Set up SSH and known_hosts
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
