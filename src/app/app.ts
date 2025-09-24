@@ -1,12 +1,23 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { LocaleService } from '../locale/locale.service';
+import { filter } from 'rxjs';
+import { localeConfig } from '../locale/locale.config';
 
 @Component({
   selector: 'app-root',
+  template: `<router-outlet />`,
   imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
 })
-export class App {
-  protected readonly title = signal('ng-test-project');
+export class AppComponent {
+  private router = inject(Router);
+  constructor(private langService: LocaleService) {
+    this.router.events
+      .pipe(filter((event: any) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        const url = this.router.url.split('/');
+        const locale = url[1] || localeConfig.default;
+        this.langService.setLang(locale);
+      });
+  }
 }

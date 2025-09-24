@@ -21,9 +21,8 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ]
+            "styles": ["src/styles.css"],
+            "polyfills": ["@angular/localize/init"]
           },
           "configurations": {
             "production": {
@@ -45,6 +44,12 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            },
+            "en": {
+              "localize": ["en-US"]
+            },
+            "ua": {
+              "localize": ["uk-UA"]
             }
           },
           "defaultConfiguration": "production"
@@ -74,10 +79,15 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ]
+            "styles": ["src/styles.css"],
+            "polyfills": ["@angular/localize/init"]
           }
+        }
+      },
+      "i18n": {
+        "sourceLocale": "en-US",
+        "locales": {
+          "uk-UA": "src/locale/messages.uk.xlf"
         }
       }
     }

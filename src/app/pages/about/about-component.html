@@ -1,0 +1,11 @@
+<p>{{ getMessage() }}</p>
+<button (click)="this.userCtx.setUser({ name: 'asd' })">click me</button>
+Navigate to <a localeLink [routerLink]="'/'">ABOUT PAGE</a>
+
+<ul>
+  <li>{{ resolveFoo }}</li>
+  <li>{{ isSomething }}</li>
+  <li>{{ todoId }}</li>
+  <li>{{ searchTerm }}</li>
+  <li>{{ locale }}</li>
+</ul>
