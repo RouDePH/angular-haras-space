@@ -2,9 +2,6 @@ import { UrlMatchResult, UrlSegment } from '@angular/router';
 import { localeConfig } from './locale.config';
 
 export function localeMatcher(segments: UrlSegment[]): UrlMatchResult | null {
-
-  console.log(JSON.stringify(segments));
-  
   if (segments.length > 0) {
     const potentialLocale = segments[0].path;
     if (localeConfig.locales.includes(potentialLocale)) {

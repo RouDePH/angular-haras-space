@@ -6,7 +6,9 @@ type Translations = Record<string, string>;
 
 @Injectable({ providedIn: 'root' })
 export class LocaleService {
-  currentLang: string = localeConfig.default;
+  public currentLang: string = localeConfig.default;
+  public locales: string[] = localeConfig.locales;
+
   private translations$ = new BehaviorSubject<Translations>({});
   private loadedLang = '';
 
@@ -19,7 +21,7 @@ export class LocaleService {
     import(`./locales/${lang}.json`)
       .then((module) => {
         console.log(module.default);
-        
+
         this.translations$.next(module.default || module);
         this.loadedLang = lang;
       })

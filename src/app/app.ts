@@ -3,11 +3,12 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { LocaleService } from '../locale/locale.service';
 import { filter } from 'rxjs';
 import { localeConfig } from '../locale/locale.config';
+import { LocaleSwitch } from './locale-switch/locale-switch';
 
 @Component({
   selector: 'app-root',
-  template: `<router-outlet />`,
-  imports: [RouterOutlet],
+  template: `<router-outlet /> <app-locale-switch />`,
+  imports: [RouterOutlet, LocaleSwitch],
 })
 export class AppComponent {
   private router = inject(Router);
