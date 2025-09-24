@@ -1,14 +1,13 @@
 import {
   ApplicationConfig,
   CSP_NONCE,
-  importProvidersFrom,
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection,
 } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { routes } from './app.routes';
-import { DBConfig, NgxIndexedDBModule } from 'ngx-indexed-db';
+import { DBConfig, provideIndexedDb } from 'ngx-indexed-db';
 
 export function migrationFactory() {
   // The animal table was added with version 2 but none of the existing tables or data needed
@@ -54,6 +53,6 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes, withComponentInputBinding()),
     { provide: CSP_NONCE, useValue: 'CSP_NONCE_INJECTION' },
-    importProvidersFrom(NgxIndexedDBModule.forRoot(dbConfig))
+    provideIndexedDb(dbConfig)
   ],
 };

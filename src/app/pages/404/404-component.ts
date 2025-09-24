@@ -9,7 +9,6 @@ import { NgxIndexedDBService } from 'ngx-indexed-db';
   imports: [RouterLink, LocaleLink],
   templateUrl: './404-component.html',
   styleUrl: './404-component.css',
-  providers: [NgxIndexedDBService],
   standalone: true,
 })
 export class NotFoundComponent implements OnInit {
