@@ -1,9 +1,7 @@
-<div>
-  <ul>
-    @for (locale of locales; track locale ){
-    <li>
-      <a [routerLink]="getRouterLink(locale)">{{ locale }}</a>
-    </li>
-    }
-  </ul>
-</div>
+<ul>
+  @for (locale of locales; track locale ){
+  <li>
+    <a [routerLink]="getRouterLink(locale)">{{ locale }}</a>
+  </li>
+  }
+</ul>

@@ -4,6 +4,7 @@ import { LocaleLink } from '../../../locale/locale.link';
 import { UserContext } from '../../user.context';
 import { PATH } from '../../app.paths';
 import { TranslatePipe } from '../../../locale/translate.pipe';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-home-component',
@@ -24,6 +25,6 @@ export class HomeComponent {
   constructor(public userCtx: UserContext) {}
 
   getMessage = computed<string>(
-    () => `Message: ${this.message}, Input: ${''} ${this.userCtx.user()}`
+    () => `Message: ${this.message}, Input: ${JSON.stringify(this.userCtx.user())}`
   );
 }
