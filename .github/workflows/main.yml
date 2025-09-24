@@ -28,6 +28,8 @@ jobs:
       - name: Build Angular app
         run: |
           npm run build
+      - name: Add nonce to modulepreload links
+        run: ./csp-nonces.sh
       - name: Set up SSH and known_hosts
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
