@@ -23,8 +23,7 @@
               "src/notifications.worker.js"
             ],
             "styles": ["src/styles.css"],
-            "polyfills": ["@angular/localize/init"],
-            "webWorkerTsConfig": "tsconfig.worker.json"
+            "polyfills": ["@angular/localize/init"]
           },
           "configurations": {
             "production": {
@@ -91,8 +90,7 @@
               }
             ],
             "styles": ["src/styles.css"],
-            "polyfills": ["@angular/localize/init"],
-            "webWorkerTsConfig": "tsconfig.worker.json"
+            "polyfills": ["@angular/localize/init"]
           }
         }
       },

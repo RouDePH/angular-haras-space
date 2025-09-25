@@ -9,7 +9,6 @@ import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { routes } from './app.routes';
 import { DBConfig, provideIndexedDb } from 'ngx-indexed-db';
-import { provideServiceWorker } from '@angular/service-worker';
 import { provideHttpClient } from '@angular/common/http';
 
 export function migrationFactory() {
@@ -57,14 +56,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
     { provide: CSP_NONCE, useValue: 'CSP_NONCE_INJECTION' },
     provideIndexedDb(dbConfig),
-    provideServiceWorker('ngsw-worker.js', {
-      enabled: !isDevMode(),
-      registrationStrategy: 'registerWhenStable:30000',
-    }),
-    provideServiceWorker('ngsw-worker.js', {
-      enabled: !isDevMode(),
-      registrationStrategy: 'registerWhenStable:30000',
-    }),
     provideHttpClient(),
   ],
 };
