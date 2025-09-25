@@ -3,11 +3,13 @@ import {
   CSP_NONCE,
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection,
+  isDevMode,
 } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { routes } from './app.routes';
 import { DBConfig, provideIndexedDb } from 'ngx-indexed-db';
+import { provideServiceWorker } from '@angular/service-worker';
 
 export function migrationFactory() {
   // The animal table was added with version 2 but none of the existing tables or data needed
@@ -53,6 +55,14 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes, withComponentInputBinding()),
     { provide: CSP_NONCE, useValue: 'CSP_NONCE_INJECTION' },
-    provideIndexedDb(dbConfig)
+    provideIndexedDb(dbConfig),
+    provideServiceWorker('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
+    provideServiceWorker('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
   ],
 };
