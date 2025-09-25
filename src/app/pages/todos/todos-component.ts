@@ -11,6 +11,7 @@ import { UserContext } from '../../user.context';
   standalone: true,
 })
 export class TodosComponent {
+
   @Input() resolveFoo?: string; // My resolved data
   @Input() isSomething?: boolean; // true
   @Input() todoId?: string; // 1

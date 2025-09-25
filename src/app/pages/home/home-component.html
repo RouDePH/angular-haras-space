@@ -13,3 +13,12 @@ Navigate to <a localeLink [routerLink]="PATH.todos.view('1')">ABOUT PAGE</a>
 <span>{{ 'HELLO' | translate }}</span>
 <button (click)="subscribe()">Подписаться</button>
 <button (click)="send()">Отправить пуш</button>
+
+<div>
+  <label for="title">title: </label>
+  <input id="title" type="text" [formControl]="title" />
+  <label for="name">body: </label>
+  <input id="body" type="body" [formControl]="body" />
+  <label for="url">url: </label>
+  <input id="url" type="text" [formControl]="url" />
+</div>
