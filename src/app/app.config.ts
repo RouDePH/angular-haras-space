@@ -10,6 +10,7 @@ import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { routes } from './app.routes';
 import { DBConfig, provideIndexedDb } from 'ngx-indexed-db';
 import { provideServiceWorker } from '@angular/service-worker';
+import { provideHttpClient } from '@angular/common/http';
 
 export function migrationFactory() {
   // The animal table was added with version 2 but none of the existing tables or data needed
@@ -64,5 +65,6 @@ export const appConfig: ApplicationConfig = {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000',
     }),
+    provideHttpClient(),
   ],
 };
