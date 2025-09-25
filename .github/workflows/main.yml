@@ -24,7 +24,7 @@ jobs:
           key: ${{ runner.os }}-angular-${{ hashFiles('**/package-lock.json') }}
           restore-keys: ${{ runner.os }}-angular-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: npm ci
       - name: Build Angular app
         run: |
           npm run build
