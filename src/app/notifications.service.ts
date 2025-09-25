@@ -24,7 +24,7 @@ export class PushNotificationService {
     });
 
     await this.http.post(`${this.baseUrl}/subscribe`, sub.toJSON()).toPromise();
-    console.log('Subscribed and sent to server');
+    alert('Subscribed and sent to server');
   }
 
   notify(title: string, body: string, url: string) {
