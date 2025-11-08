@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { localeConfig } from './locale.config';
 
 type Translations = Record<string, string>;
+type Params = Record<string, string | number>;
 
 @Injectable({ providedIn: 'root' })
 export class LocaleService {
@@ -33,8 +34,22 @@ export class LocaleService {
     return this.translations$.asObservable();
   }
 
-  translate(key: string): string {
+  private resolveKey(obj: Record<string, any>, path: string): string | undefined {
+    return path
+      .split('.')
+      .reduce<any>((acc, part) => (acc && typeof acc === 'object' ? acc[part] : undefined), obj);
+  }
+
+  private interpolate(text: string, params?: Params): string {
+    if (!params) return text;
+    return text.replace(/\{\{(\w+)\}\}/g, (_, key) =>
+      params[key] != null ? String(params[key]) : `{{${key}}}`
+    );
+  }
+
+  translate(key: string, params?: Params): string {
     const translations = this.translations$.getValue();
-    return translations[key] || key;
+    const text = this.resolveKey(translations, key) || key;
+    return this.interpolate(text, params);
   }
 }

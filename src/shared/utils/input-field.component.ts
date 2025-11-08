@@ -1,25 +1,51 @@
-import { Component, Input, computed, OnInit, Signal } from '@angular/core';
+import { Component, Input, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { useFormContext } from './use-form.context';
+import { LocaleService } from '../../locale/locale.service';
 
 @Component({
   selector: 'app-input-field',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
+  styleUrls: ['./input-field.component.scss'],
   template: `
-    <div class="form-group mb-3">
-      <label *ngIf="label">{{ label }}</label>
-      <input
-        class="input border rounded px-2 py-1 w-full"
-        [name]="name"
-        [formControl]="formField().control"
-        [placeholder]="placeholder"
-        [class.invalid]="!formField().isValid() && formField().isTouched()"
-      />
-      <div class="error">
+    <div class="text-field" [class.error]="!formField().isValid() && formField().isTouched()">
+      <div class="input-wrapper">
+        <input
+          class="input-element"
+          [id]="name"
+          [name]="name"
+          [formControl]="formField().control"
+          [placeholder]="focused ? placeholder : ''"
+          (focus)="focused = true"
+          (blur)="focused = false"
+        />
+        <label
+          class="input-label"
+          [class.filled]="formField().control.value || focused"
+          [class.error]="!formField().isValid() && formField().isTouched()"
+          [for]="name"
+        >
+          {{ label }}
+        </label>
+        <fieldset class="outline">
+          @if(formField().control.value || focused){
+          <legend>
+            <span style="color: transparent">{{ label }}</span>
+          </legend>
+
+          }@else{
+          <legend></legend>
+          }
+        </fieldset>
+      </div>
+
+      <div class="helper-text" *ngIf="!formField().isValid() && formField().isTouched()">
         @for (err of formField().errors(); track err.key) {
-        <div>{{ err.key }}: {{ err.value | json }}</div>
+        <div>
+          {{ this.localeService.translate('validation.' + err.key, err.value) }}
+        </div>
         }
       </div>
     </div>
@@ -30,16 +56,9 @@ export class InputFieldComponent {
   @Input() label?: string;
   @Input() placeholder?: string;
 
-  private readonly ctx = useFormContext();
-  // control!: FormControl;
-  formField = computed(() => this.ctx.form().fields[this.name]);
+  focused = false;
 
-  // ngOnInit() {
-  //   const form = this.ctx.form();
-  //   const ctrl = form.formGroup.get(this.name);
-  //   if (!(ctrl instanceof FormControl)) {
-  //     throw new Error(`"${this.name}" is not a FormControl`);
-  //   }
-  //   this.control = ctrl;
-  // }
+  private readonly ctx = useFormContext();
+  formField = computed(() => this.ctx.form().fields[this.name]);
+  localeService = inject(LocaleService);
 }

@@ -126,10 +126,7 @@ export function useForm<T extends Record<string, any>>(opts: UseFormOptions<T>):
           fieldValue();
           status();
           touchedTrigger();
-
           const e = control.errors;
-          console.log(control.errors);
-
           if (!e || !control.touched) return [];
           return Object.entries(e).map(([key, value]) => ({ key, value }));
         }),

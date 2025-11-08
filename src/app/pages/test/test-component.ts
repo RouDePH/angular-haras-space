@@ -9,43 +9,45 @@ import { JsonPipe } from '@angular/common';
   selector: 'app-test-component',
   imports: [FormProviderComponent, InputFieldComponent, JsonPipe],
   template: `
-    <app-form-provider [form]="form" [onSubmit]="onSubmit">
-      <app-input-field name="email" label="Email" placeholder="Email" />
+    <div class="form-provider">
+      <app-form-provider [form]="form" [onSubmit]="onSubmit">
+        <app-input-field name="email" label="Email" placeholder="Email" />
 
-      <br />
+        <br />
+
+        <div>
+          <p>isDirty: {{ form.fields.email.isDirty() }}</p>
+          <p>isPristine: {{ form.fields.email.isPristine() }}</p>
+          <p>isTouched: {{ form.fields.email.isTouched() }}</p>
+          <p>isValid: {{ form.fields.email.isValid() }}</p>
+          <p>errors: {{ form.fields.email.errors() | json }}</p>
+        </div>
+        <br />
+        <br />
+
+        <app-input-field name="password" label="Password" placeholder="Password" />
+
+        <br />
+        <div>
+          <p>isDirty: {{ form.fields.password.isDirty() }}</p>
+          <p>isPristine: {{ form.fields.password.isPristine() }}</p>
+          <p>isTouched: {{ form.fields.password.isTouched() }}</p>
+          <p>isValid: {{ form.fields.password.isValid() }}</p>
+          <p>errors: {{ form.fields.password.errors() | json }}</p>
+        </div>
+        <br />
+        <br />
+
+        <button type="submit" [disabled]="form.state.isSubmitting()">Submit</button>
+      </app-form-provider>
 
       <div>
-        <p>isDirty: {{ form.fields.email.isDirty() }}</p>
-        <p>isPristine: {{ form.fields.email.isPristine() }}</p>
-        <p>isTouched: {{ form.fields.email.isTouched() }}</p>
-        <p>isValid: {{ form.fields.email.isValid() }}</p>
-        <p>errors: {{ form.fields.email.errors() | json }}</p>
+        <p>isDirty: {{ form.state.isDirty() }}</p>
+        <p>isPristine: {{ form.state.isPristine() }}</p>
+        <p>isSubmitting: {{ form.state.isSubmitting() }}</p>
+        <p>isTouched: {{ form.state.isTouched() }}</p>
+        <p>isValid: {{ form.state.isValid() }}</p>
       </div>
-      <br />
-      <br />
-
-      <app-input-field name="password" label="Password" placeholder="Password" />
-
-      <br />
-      <div>
-        <p>isDirty: {{ form.fields.password.isDirty() }}</p>
-        <p>isPristine: {{ form.fields.password.isPristine() }}</p>
-        <p>isTouched: {{ form.fields.password.isTouched() }}</p>
-        <p>isValid: {{ form.fields.password.isValid() }}</p>
-        <p>errors: {{ form.fields.password.errors() | json }}</p>
-      </div>
-      <br />
-      <br />
-
-      <button type="submit" [disabled]="form.state.isSubmitting()">Submit</button>
-    </app-form-provider>
-
-    <div>
-      <p>isDirty: {{ form.state.isDirty() }}</p>
-      <p>isPristine: {{ form.state.isPristine() }}</p>
-      <p>isSubmitting: {{ form.state.isSubmitting() }}</p>
-      <p>isTouched: {{ form.state.isTouched() }}</p>
-      <p>isValid: {{ form.state.isValid() }}</p>
     </div>
   `,
   styleUrl: './test-component.css',

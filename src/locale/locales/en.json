@@ -1,4 +1,9 @@
 {
   "HELLO": "Hello!",
-  "WELCOME": "Welcome!"
+  "WELCOME": "Welcome!",
+
+  "validation": {
+    "required": "this value is required",
+    "minlength": "value must be at least {{requiredLength}} characters long (now {{actualLength}})"
+  }
 }
