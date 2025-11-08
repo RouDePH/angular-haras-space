@@ -13,6 +13,10 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/home/home-component').then((m) => m.HomeComponent),
       },
       {
+        path: 'test',
+        loadComponent: () => import('./pages/test/test-component').then((m) => m.TestComponent),
+      },
+      {
         path: 'todos/:todoId',
         data: {
           isSomething: true,
