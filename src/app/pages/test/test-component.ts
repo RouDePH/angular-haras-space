@@ -1,4 +1,4 @@
-import { Component, computed, inject, Input, input, OnInit } from '@angular/core';
+import { Component, computed, inject, Input, input, OnInit, signal } from '@angular/core';
 import { useForm } from '../../../shared/utils/use-form';
 import { Validators } from '@angular/forms';
 import { FormProviderComponent } from '../../../shared/utils/form-provider.component';
@@ -28,11 +28,50 @@ import { JsonPipe } from '@angular/common';
         <app-input-field
           name="password"
           label="Password"
+          [type]="isPasswordVisible() ? 'text' : 'password'"
           placeholder="Password"
           helperText="Helper Text"
         >
           <ng-template #iconRight>
-            <button type="button" class="clear-btn" (click)="onClick()">✕</button>
+            @if(isPasswordVisible()){
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              (click)="togglePasswordVisibility()"
+              class="clear-btn"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              stroke-width="0.1"
+            >
+              <path
+                fill="currentColor"
+                d="M4.71 3.29a1 1 0 0 0-1.42 1.42l5.63 5.63a3.5 3.5 0 0 0 4.74 4.74l5.63 5.63a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.42ZM12 13.5a1.5 1.5 0 0 1-1.5-1.5s0-.05 0-.07l1.56 1.56Z"
+              />
+              <path
+                fill="currentColor"
+                d="M12.22 17c-4.3.1-7.12-3.59-8-5a13.7 13.7 0 0 1 2.24-2.72L5 7.87a15.9 15.9 0 0 0-2.87 3.63a1 1 0 0 0 0 1c.63 1.09 4 6.5 9.89 6.5h.25a9.5 9.5 0 0 0 3.23-.67l-1.58-1.58a7.7 7.7 0 0 1-1.7.25m9.65-5.5c-.64-1.11-4.17-6.68-10.14-6.5a9.5 9.5 0 0 0-3.23.67l1.58 1.58a7.7 7.7 0 0 1 1.7-.25c4.29-.11 7.11 3.59 8 5a13.7 13.7 0 0 1-2.29 2.72L19 16.13a15.9 15.9 0 0 0 2.91-3.63a1 1 0 0 0-.04-1"
+              />
+            </svg>
+            }@else {
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              (click)="togglePasswordVisibility()"
+              class="clear-btn"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              stroke-width="0.1"
+            >
+              <path
+                fill="currentColor"
+                d="M21.87 11.5c-.64-1.11-4.16-6.68-10.14-6.5c-5.53.14-8.73 5-9.6 6.5a1 1 0 0 0 0 1c.63 1.09 4 6.5 9.89 6.5h.25c5.53-.14 8.74-5 9.6-6.5a1 1 0 0 0 0-1M12.22 17c-4.31.1-7.12-3.59-8-5c1-1.61 3.61-4.9 7.61-5c4.29-.11 7.11 3.59 8 5c-1.03 1.61-3.61 4.9-7.61 5"
+              />
+              <path
+                fill="currentColor"
+                d="M12 8.5a3.5 3.5 0 1 0 3.5 3.5A3.5 3.5 0 0 0 12 8.5m0 5a1.5 1.5 0 1 1 1.5-1.5a1.5 1.5 0 0 1-1.5 1.5"
+              />
+            </svg>
+            }
           </ng-template>
         </app-input-field>
 
@@ -63,6 +102,9 @@ import { JsonPipe } from '@angular/common';
   standalone: true,
 })
 export class TestComponent {
+  isPasswordVisible = signal(false);
+  togglePasswordVisibility = () => this.isPasswordVisible.update((val) => !val);
+
   form = useForm<{ email: string; password: string }>({
     initialValues: { email: '', password: '' },
     validators: {
