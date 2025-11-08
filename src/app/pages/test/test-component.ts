@@ -27,7 +27,7 @@ import { JsonPipe } from '@angular/common';
 
         <app-input-field name="password" label="Password" placeholder="Password">
           <ng-template #iconRight>
-            <button type="button" class="clear-btn" onclick="alert('asd')">✕</button>
+            <button type="button" class="clear-btn" onclick="onClick()">✕</button>
           </ng-template>
         </app-input-field>
 
@@ -65,6 +65,10 @@ export class TestComponent {
       password: [Validators.required, Validators.minLength(6)],
     },
   });
+
+  onClick(){
+    alert('123')
+  }
 
   async onSubmit({ password, email }: { email: string; password: string }) {
     console.log('Submitting started...');
