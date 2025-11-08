@@ -5,7 +5,6 @@ const STORAGE_KEY = 'app-theme';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
-  /** Текущее состояние темы (reactive Signal) */
   readonly mode = signal<ThemeMode>('light');
 
   private renderer: Renderer2;
@@ -14,12 +13,10 @@ export class ThemeService {
   constructor(rendererFactory: RendererFactory2) {
     this.renderer = rendererFactory.createRenderer(null, null);
 
-    // Инициализация из localStorage или системной темы
     const stored = this.getStoredTheme();
     const initial: ThemeMode = stored ?? (this.mediaQuery.matches ? 'dark' : 'light');
     this.mode.set(initial);
 
-    // 🔹 Слушаем системные изменения темы (OS)
     this.mediaQuery.addEventListener('change', (e) => {
       // if (!this.hasStoredTheme()) {
       //   this.mode.set(e.matches ? 'dark' : 'light');
@@ -28,7 +25,6 @@ export class ThemeService {
       this.mode.set(e.matches ? 'dark' : 'light');
     });
 
-    // 🔹 Слушаем изменения в localStorage (если тема сменена в другой вкладке)
     window.addEventListener('storage', (event) => {
       if (event.key === STORAGE_KEY && event.newValue) {
         const newTheme = event.newValue as ThemeMode;
@@ -38,7 +34,6 @@ export class ThemeService {
       }
     });
 
-    // Реактивно применяем тему
     effect(() => {
       const current = this.mode();
       this.applyTheme(current);
@@ -69,6 +64,14 @@ export class ThemeService {
       return null;
     }
   }
+
+  // private hasStoredTheme(): boolean {
+  //   try {
+  //     return localStorage.getItem(STORAGE_KEY) != null;
+  //   } catch {
+  //     return false;
+  //   }
+  // }
 
   clearStorage() {
     try {

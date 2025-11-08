@@ -192,6 +192,15 @@
     color: var(--color-primary);
   }
 
+  &:focus-within .input-wrapper {
+    .icon,
+    button {
+      color: var(--color-text);
+      fill: var(--color-text);
+      border-color: var(--color-text);
+    }
+  }
+
   &.error .outline {
     border-color: var(--color-error);
   }
