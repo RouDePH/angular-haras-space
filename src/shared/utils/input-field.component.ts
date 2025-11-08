@@ -1,4 +1,12 @@
-import { Component, Input, computed, inject, TemplateRef, ContentChild } from '@angular/core';
+import {
+  Component,
+  Input,
+  computed,
+  inject,
+  TemplateRef,
+  ContentChild,
+  ViewEncapsulation,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { useFormContext } from './use-form.context';
@@ -9,6 +17,7 @@ import { LocaleService } from '../../locale/locale.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   styleUrls: ['./input-field.component.scss'],
+  encapsulation: ViewEncapsulation.None,
   template: `
     <div class="text-field" [class.error]="!formField().isValid() && formField().isTouched()">
       <div
