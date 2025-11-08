@@ -134,7 +134,7 @@
     &.filled {
       top: 0.15rem;
       font-size: 0.75rem;
-      color: var(--color-primary);
+      color: var(--color-text-secondary);
       padding: 0 0.25rem;
       transform: translateY(-2px);
     }
@@ -168,7 +168,7 @@
       span {
         visibility: visible;
         padding: 0 0.5rem;
-        color: var(--color-primary);
+        color: var(--color-border);
         opacity: 0;
         transition: opacity 0.25s ease;
       }
@@ -183,8 +183,13 @@
     border-color: var(--color-primary);
 
     legend span {
+      color: var(--color-primary);
       opacity: 1;
     }
+  }
+
+  &:focus-within .input-label {
+    color: var(--color-primary);
   }
 
   &.error .outline {
