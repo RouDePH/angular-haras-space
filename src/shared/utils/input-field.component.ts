@@ -8,43 +8,38 @@ import { useFormContext } from './use-form.context';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   template: `
-    <div class="form-group mb-3" *ngIf="control">
+    <div class="form-group mb-3">
       <label *ngIf="label">{{ label }}</label>
       <input
         class="input border rounded px-2 py-1 w-full"
-        [formControl]="control"
+        [name]="name"
+        [formControl]="formField().control"
         [placeholder]="placeholder"
-        [class.invalid]="control.invalid && control.touched"
+        [class.invalid]="!formField().isValid() && formField().isTouched()"
       />
-      <div class="error" *ngIf="control.invalid && control.touched">
-        @for (err of errors(); track err.key) {
+      <div class="error">
+        @for (err of formField().errors(); track err.key) {
         <div>{{ err.key }}: {{ err.value | json }}</div>
         }
       </div>
     </div>
   `,
 })
-export class InputFieldComponent implements OnInit {
+export class InputFieldComponent {
   @Input({ required: true }) name!: string;
   @Input() label?: string;
   @Input() placeholder?: string;
 
   private readonly ctx = useFormContext();
-  control!: FormControl;
-  errors: Signal<{ key: string; value: any; }[]> = computed(() => []);;
+  // control!: FormControl;
+  formField = computed(() => this.ctx.form().fields[this.name]);
 
-  ngOnInit() {
-    const form = this.ctx.form();
-    const ctrl = form.get(this.name);
-    if (!(ctrl instanceof FormControl)) {
-      throw new Error(`"${this.name}" is not a FormControl`);
-    }
-    this.control = ctrl;
-
-    this.errors = computed(() => {
-      const e = this.control.errors;
-      if (!e) return [];
-      return Object.entries(e).map(([key, value]) => ({ key, value }));
-    });
-  }
+  // ngOnInit() {
+  //   const form = this.ctx.form();
+  //   const ctrl = form.formGroup.get(this.name);
+  //   if (!(ctrl instanceof FormControl)) {
+  //     throw new Error(`"${this.name}" is not a FormControl`);
+  //   }
+  //   this.control = ctrl;
+  // }
 }

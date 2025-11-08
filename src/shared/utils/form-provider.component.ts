@@ -10,23 +10,22 @@ import { useForm } from './use-form';
   imports: [CommonModule, ReactiveFormsModule],
   providers: [FormContextService],
   template: `
-    <form [formGroup]="form.formGroup" (ngSubmit)="onSubmit()">
+    <form [formGroup]="form.formGroup" (ngSubmit)="_onSubmit()">
       <ng-content />
     </form>
   `,
 })
 export class FormProviderComponent<T extends Record<string, any>> {
   @Input({ required: true }) form!: ReturnType<typeof useForm<T>>;
+  @Input({ required: true }) onSubmit!: (values: T) => void;
 
   constructor(private readonly ctx: FormContextService<T>) {}
 
   ngOnInit() {
-    this.ctx.setForm(this.form.formGroup);
+    this.ctx.setForm(this.form);
   }
 
-  onSubmit() {
-    this.form.handleSubmit((values: any) => {
-      console.log('Submit from context form:', values);
-    });
+  _onSubmit() {
+    this.form.handleSubmit((values: T) => this.onSubmit(values));
   }
 }

@@ -4,10 +4,26 @@
 } from '@angular/forms';
 import { signal, computed, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { startWith } from 'rxjs';
+import { merge, startWith } from 'rxjs';
 export interface UseFormOptions<T extends Record<string, any>> {
   initialValues: T;
   validators?: { [K in keyof T]?: any[] };
+}
+
+interface FormState {
+  isDirty: Signal<boolean>;
+  isValid: Signal<boolean>;
+  isTouched: Signal<boolean>;
+  isPristine: Signal<boolean>;
+  isSubmitting: Signal<boolean>;
+}
+
+export interface Form<T> {
+  formGroup: FormGroup;
+  fields: { [K in keyof T]: FormField };
+  handleSubmit(cb: (values: T) => void | Promise<void>): Promise<void>;
+  reset(values?: Partial<T> | undefined): void;
+  state: FormState;
 }
 
 interface FormField {
@@ -20,7 +36,7 @@ interface FormField {
   errors: Signal<{ key: string; value: any }[]>;
 }
 
-export function useForm<T extends Record<string, any>>(opts: UseFormOptions<T>) {
+export function useForm<T extends Record<string, any>>(opts: UseFormOptions<T>): Form<T> {
   const controls = Object.entries(opts.initialValues).reduce((acc, [key, value]) => {
     const fieldValidators = opts.validators?.[key as keyof T] ?? [];
     acc[key] = new FormControl(value, fieldValidators);
@@ -28,10 +44,36 @@ export function useForm<T extends Record<string, any>>(opts: UseFormOptions<T>) 
   }, {} as Record<string, FormControl>);
 
   const form = new FormGroup(controls);
-  const isDirty = computed(() => form.dirty);
-  const isValid = computed(() => form.valid);
-  const isTouched = computed(() => form.touched);
-  const isPristine = computed(() => form.pristine);
+  const touchedTrigger = signal(0);
+
+  const formStateTrigger = toSignal(
+    merge(form.valueChanges, form.statusChanges).pipe(startWith(null))
+  );
+
+  const isDirty = computed(() => {
+    formStateTrigger();
+    touchedTrigger();
+    return form.dirty;
+  });
+
+  const isValid = computed(() => {
+    formStateTrigger();
+    touchedTrigger();
+    return form.valid;
+  });
+
+  const isTouched = computed(() => {
+    formStateTrigger();
+    touchedTrigger();
+    return form.touched;
+  });
+
+  const isPristine = computed(() => {
+    formStateTrigger();
+    touchedTrigger();
+    return form.pristine;
+  });
+
   const isSubmitting = signal(false);
 
   const fields: {
@@ -52,28 +94,43 @@ export function useForm<T extends Record<string, any>>(opts: UseFormOptions<T>) 
         control,
         value: fieldValue,
         isDirty: computed(() => {
+          fieldValue();
           status();
+          touchedTrigger();
+
           return control.dirty;
         }),
         isValid: computed(() => {
+          fieldValue();
           status();
+          touchedTrigger();
+
           return control.valid;
         }),
         isTouched: computed(() => {
+          fieldValue();
           status();
+          touchedTrigger();
+
           return control.touched;
         }),
         isPristine: computed(() => {
+          fieldValue();
           status();
+          touchedTrigger();
+
           return control.pristine;
         }),
 
         errors: computed(() => {
+          fieldValue();
           status();
+          touchedTrigger();
+
           const e = control.errors;
           console.log(control.errors);
 
-          if (!e) return [];
+          if (!e || !control.touched) return [];
           return Object.entries(e).map(([key, value]) => ({ key, value }));
         }),
       };
@@ -88,6 +145,9 @@ export function useForm<T extends Record<string, any>>(opts: UseFormOptions<T>) 
 
   async function handleSubmit(cb: (values: T) => Promise<void> | void) {
     form.markAllAsTouched();
+
+    touchedTrigger.update((v) => v + 1);
+
     if (!form.valid) return;
     isSubmitting.set(true);
     try {
