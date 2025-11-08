@@ -185,13 +185,13 @@
   // ==============================
   // 🔹 Dark theme (optional)
   // ==============================
-  @include utils.dark {
-    .input-label {
-      color: var(--color-text-secondary);
-    }
+  // @include utils.dark {
+  //   .input-label {
+  //     color: var(--color-text-secondary);
+  //   }
 
-    .outline {
-      border-color: var(--color-border);
-    }
-  }
+  //   .outline {
+  //     border-color: var(--color-border);
+  //   }
+  // }
 }
