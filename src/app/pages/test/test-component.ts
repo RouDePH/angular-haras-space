@@ -50,7 +50,7 @@ import { JsonPipe } from '@angular/common';
       </div>
     </div>
   `,
-  styleUrl: './test-component.css',
+  styleUrl: './test-component.scss',
   standalone: true,
 })
 export class TestComponent {

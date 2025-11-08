@@ -7,7 +7,7 @@ import { UserContext } from '../../user.context';
   selector: 'app-todos-component',
   imports: [LocaleLink, RouterLink],
   templateUrl: './todos-component.html',
-  styleUrl: './todos-component.css',
+  styleUrl: './todos-component.scss',
   standalone: true,
 })
 export class TodosComponent {

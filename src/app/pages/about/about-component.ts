@@ -7,7 +7,7 @@ import { UserContext } from '../../user.context';
   selector: 'app-test-component',
   imports: [LocaleLink, RouterLink],
   templateUrl: './about-component.html',
-  styleUrl: './about-component.css',
+  styleUrl: './about-component.scss',
   standalone: true,
 })
 export class AboutComponent {

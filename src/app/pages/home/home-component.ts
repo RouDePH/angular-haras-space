@@ -12,7 +12,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
   selector: 'app-home-component',
   imports: [LocaleLink, RouterLink, TranslatePipe, ReactiveFormsModule],
   templateUrl: './home-component.html',
-  styleUrl: './home-component.css',
+  styleUrl: './home-component.scss',
   standalone: true,
 })
 export class HomeComponent {

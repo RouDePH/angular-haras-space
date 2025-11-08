@@ -4,11 +4,12 @@ import { LocaleService } from '../locale/locale.service';
 import { filter } from 'rxjs';
 import { localeConfig } from '../locale/locale.config';
 import { LocaleSwitch } from './locale-switch/locale-switch';
+import { ThemePickerComponent } from '../shared/components/theme-picker.component';
 
 @Component({
   selector: 'app-root',
-  template: `<router-outlet /> <app-locale-switch />`,
-  imports: [RouterOutlet, LocaleSwitch],
+  template: `<router-outlet /> <app-locale-switch /> <app-theme-picker />`,
+  imports: [RouterOutlet, LocaleSwitch, ThemePickerComponent],
 })
 export class AppComponent {
   private router = inject(Router);

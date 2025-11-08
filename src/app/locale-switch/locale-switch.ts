@@ -7,7 +7,7 @@ import { filter, Subscription } from 'rxjs';
   selector: 'app-locale-switch',
   imports: [RouterLink],
   templateUrl: './locale-switch.html',
-  styleUrl: './locale-switch.css',
+  styleUrl: './locale-switch.scss',
   standalone: true
 })
 export class LocaleSwitch {

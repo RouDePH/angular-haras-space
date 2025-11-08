@@ -1,0 +1,22 @@
+@mixin theme-transition($duration: 0.25s) {
+  transition: background-color $duration ease, color $duration ease, border-color $duration ease,
+    box-shadow $duration ease;
+}
+
+@mixin themed-color($varName) {
+  color: var(--#{$varName});
+}
+
+@mixin dark {
+  :root[data-theme='dark'] &,
+  :host-context([data-theme='dark']) & {
+    @content;
+  }
+}
+
+@mixin light {
+  :root[data-theme='light'] &,
+  :host-context([data-theme='light']) & {
+    @content;
+  }
+}

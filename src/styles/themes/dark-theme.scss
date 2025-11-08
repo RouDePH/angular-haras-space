@@ -1,0 +1,17 @@
+@use "sass:map";
+@use "./variables" as vars;
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-scheme: dark;
+
+  --color-bg: #0f172a;
+  --color-surface: #1e293b;
+  --color-border: #334155;
+  --color-text: #f8fafc;
+  --color-text-secondary: #cbd5e1;
+
+  --color-primary: #{map.get(vars.$palette-primary, 400)};
+  --color-primary-hover: #{map.get(vars.$palette-primary, 300)};
+  --color-error: #{map.get(vars.$palette-error, 400)};
+}

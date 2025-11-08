@@ -5,7 +5,11 @@
   "projects": {
     "ng-test-project": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -15,26 +19,20 @@
           "options": {
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
                 "input": "public"
-              },
-              "src/notifications.worker.js"
+              }
             ],
-            "styles": ["src/styles.css"],
-            "polyfills": ["@angular/localize/init"]
+            "styles": ["src/styles.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/styles"]
+            }
           },
           "configurations": {
             "production": {
-              "optimization": {
-                "scripts": true,
-                "styles": {
-                  "minify": true,
-                  "inlineCritical": false
-                },
-                "fonts": true
-              },
               "budgets": [
                 {
                   "type": "initial",
@@ -53,12 +51,6 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
-            },
-            "en": {
-              "localize": ["en-US"]
-            },
-            "ua": {
-              "localize": ["uk-UA"]
             }
           },
           "defaultConfiguration": "production"
@@ -82,21 +74,15 @@
           "builder": "@angular/build:karma",
           "options": {
             "tsConfig": "tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.css"],
-            "polyfills": ["@angular/localize/init"]
+            "styles": ["src/styles.scss"]
           }
-        }
-      },
-      "i18n": {
-        "sourceLocale": "en-US",
-        "locales": {
-          "uk-UA": "src/locale/messages.uk.xlf"
         }
       }
     }

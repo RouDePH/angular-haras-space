@@ -8,7 +8,7 @@ import { NgxIndexedDBService } from 'ngx-indexed-db';
   selector: 'app-404-component',
   imports: [RouterLink, LocaleLink],
   templateUrl: './404-component.html',
-  styleUrl: './404-component.css',
+  styleUrl: './404-component.scss',
   standalone: true,
 })
 export class NotFoundComponent implements OnInit {

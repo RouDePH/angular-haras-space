@@ -7,7 +7,7 @@ import { PATH } from '../../app.paths';
   selector: 'app-403-component',
   imports: [RouterLink, LocaleLink],
   templateUrl: './403-component.html',
-  styleUrl: './403-component.css',
+  styleUrl: './403-component.scss',
   standalone: true,
 })
 export class NotFoundComponent {
