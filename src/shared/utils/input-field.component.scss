@@ -7,11 +7,11 @@
   width: 100%;
   transition: all 0.25s ease;
 
-  background-color: red;
+  // background-color: red;
 
-  @include utils.dark {
-    background-color: blue;
-  }
+  // @include utils.dark {
+  //   background-color: blue;
+  // }
 
   .input-wrapper {
     position: relative;
