@@ -19,10 +19,22 @@ export class ThemeService {
     const initial: ThemeMode = stored ?? (this.mediaQuery.matches ? 'dark' : 'light');
     this.mode.set(initial);
 
-    // Слушаем системные изменения
+    // 🔹 Слушаем системные изменения темы (OS)
     this.mediaQuery.addEventListener('change', (e) => {
-      if (!this.hasStoredTheme()) {
-        this.mode.set(e.matches ? 'dark' : 'light');
+      // if (!this.hasStoredTheme()) {
+      //   this.mode.set(e.matches ? 'dark' : 'light');
+      // }
+      this.storeTheme(e.matches ? 'dark' : 'light');
+      this.mode.set(e.matches ? 'dark' : 'light');
+    });
+
+    // 🔹 Слушаем изменения в localStorage (если тема сменена в другой вкладке)
+    window.addEventListener('storage', (event) => {
+      if (event.key === STORAGE_KEY && event.newValue) {
+        const newTheme = event.newValue as ThemeMode;
+        if (newTheme !== this.mode()) {
+          this.mode.set(newTheme);
+        }
       }
     });
 
@@ -40,11 +52,7 @@ export class ThemeService {
 
   private applyTheme(theme: ThemeMode) {
     const root = document.documentElement;
-
-    // Атрибут для CSS-переменных
     this.renderer.setAttribute(root, 'data-theme', theme);
-
-    // Системное свойство для native UI
     this.renderer.setStyle(root, 'color-scheme', theme);
   }
 
@@ -59,14 +67,6 @@ export class ThemeService {
       return (localStorage.getItem(STORAGE_KEY) as ThemeMode) ?? null;
     } catch {
       return null;
-    }
-  }
-
-  private hasStoredTheme(): boolean {
-    try {
-      return localStorage.getItem(STORAGE_KEY) != null;
-    } catch {
-      return false;
     }
   }
 

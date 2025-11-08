@@ -65,7 +65,10 @@
               "buildTarget": "ng-test-project:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "allowedHosts": ["a92d65373678.ngrok-free.app"]
+          }
         },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n"
