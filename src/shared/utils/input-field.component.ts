@@ -72,11 +72,14 @@ import { LocaleService } from '../../locale/locale.service';
         </fieldset>
       </div>
 
-      <div class="helper-text" *ngIf="!formField().isValid() && formField().isTouched()">
-        @for (err of formField().errors(); track err.key) {
+      <div class="helper-text">
+        @if(!formField().isValid() && formField().isTouched()){ @for (err of formField().errors();
+        track err.key) {
         <div>
           {{ this.localeService.translate('validation.' + err.key, err.value) }}
         </div>
+        } } @else if(helperText) {
+        <div>{{ helperText }}</div>
         }
       </div>
     </div>
@@ -91,6 +94,7 @@ export class InputFieldComponent {
   // иконки в виде HTML-строки (например, SVG)
   @Input() iconLeft?: string;
   @Input() iconRight?: string;
+  @Input() helperText?: string;
 
   // альтернатива — шаблон (передаваемый из родителя)
   @ContentChild('iconLeft') iconLeftTpl?: TemplateRef<any>;

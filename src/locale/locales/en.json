@@ -4,6 +4,7 @@
 
   "validation": {
     "required": "this value is required",
-    "minlength": "value must be at least {{requiredLength}} characters long (now {{actualLength}})"
+    "minlength": "value must be at least {{requiredLength}} characters long (now {{actualLength}})",
+    "email": "provide valid email"
   }
 }

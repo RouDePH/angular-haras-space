@@ -1,2 +1,7 @@
 {
+  "validation": {
+    "required": "deze waarde is verplicht",
+    "minlength": "de waarde moet minimaal {{requiredLength}} tekens lang zijn (nu {{actualLength}})",
+    "email": "voer een geldig e-mailadres in"
+  }
 }

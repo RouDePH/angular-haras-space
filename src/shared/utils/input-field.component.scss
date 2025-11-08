@@ -6,34 +6,6 @@
   flex-direction: column;
   width: 100%;
   transition: all 0.25s ease;
-  // ==============================
-  // 🔹 Input wrapper & icon layout
-  // ==============================
-
-  &.error {
-    .input-wrapper {
-      color: var(--color-error);
-
-      .icon,
-      button,
-      .input-label,
-      .outline {
-        color: var(--color-error);
-        fill: var(--color-error);
-        border-color: var(--color-error);
-      }
-
-      svg,
-      path {
-        fill: var(--color-error);
-        stroke: var(--color-error);
-      }
-    }
-
-    .helper-text {
-      color: var(--color-error);
-    }
-  }
 
   .input-wrapper {
     position: relative;
@@ -42,7 +14,6 @@
     font-family: inherit;
     width: 100%;
 
-    // когда есть левая иконка
     &.has-left-icon {
       .input-element {
         padding-left: 2.75rem;
@@ -57,7 +28,6 @@
       }
     }
 
-    // когда есть правая иконка
     &.has-right-icon {
       .input-element {
         padding-right: 2.75rem;
@@ -91,9 +61,6 @@
     }
   }
 
-  // ==============================
-  // 🔹 Input element
-  // ==============================
   .input-element {
     flex: 1;
     width: 100%;
@@ -118,9 +85,6 @@
     }
   }
 
-  // ==============================
-  // 🔹 Floating label
-  // ==============================
   .input-label {
     position: absolute;
     left: 0.95rem;
@@ -144,9 +108,6 @@
     }
   }
 
-  // ==============================
-  // 🔹 Outline / border
-  // ==============================
   .outline {
     position: absolute;
     inset: 0;
@@ -154,7 +115,7 @@
     border: 1px solid var(--color-border);
     pointer-events: none;
     z-index: 1;
-    transition: border-color 0.25s ease, background-color 0.25s ease, transform 0.25s ease;
+    transition: border-color 0.25s ease, background-color 0.25s ease;
 
     legend {
       width: auto;
@@ -175,73 +136,73 @@
     }
   }
 
-  &:hover .outline {
-    border-color: var(--color-text-secondary);
-  }
-
-  &:focus-within .outline {
-    border-color: var(--color-primary);
-
-    legend span {
-      color: var(--color-primary);
-      opacity: 1;
-    }
-  }
-
-  &:focus-within .input-label {
-    color: var(--color-primary);
-  }
-
-  &:focus-within .input-wrapper {
-    .icon,
-    button {
-      color: var(--color-text);
-      fill: var(--color-text);
-      border-color: var(--color-text);
-    }
-  }
-
-  &.error .outline {
-    border-color: var(--color-error);
-  }
-
-  // ==============================
-  // 🔹 Helper text
-  // ==============================
   .helper-text {
     margin-top: 0.25rem;
     margin-left: 0.25rem;
     font-size: 0.75rem;
-    color: var(--color-error);
+    color: var(--color-text-secondary);
     transition: opacity 0.25s ease, transform 0.25s ease;
 
-    .text-field.error & {
-      opacity: 1;
-      transform: translateY(0);
+    // .text-field.error & {
+    //   opacity: 1;
+    //   transform: translateY(0);
+    // }
+  }
+
+  &:hover .outline {
+    border-color: var(--color-text-secondary);
+  }
+
+  &:focus-within {
+    .outline {
+      border-color: var(--color-primary);
+
+      legend span {
+        color: var(--color-primary);
+        opacity: 1;
+      }
+    }
+
+    .input-label {
+      color: var(--color-primary);
+    }
+
+    .input-wrapper {
+      .icon,
+      button {
+        color: var(--color-text);
+        fill: var(--color-text);
+        border-color: var(--color-text);
+      }
     }
   }
 
-  // ==============================
-  // 🔹 Dark theme (optional)
-  // ==============================
-  // @include utils.dark {
-  //   .input-label {
-  //     color: var(--color-text-secondary);
-  //   }
+  &.error {
+    .input-wrapper {
+      color: var(--color-error);
 
-  //   .outline {
-  //     border-color: var(--color-border);
-  //   }
-  // }
+      .icon,
+      button,
+      .input-label,
+      .outline {
+        color: var(--color-error);
+        fill: var(--color-error);
+        border-color: var(--color-error);
+      }
+
+      svg,
+      path {
+        fill: var(--color-error);
+        stroke: var(--color-error);
+      }
+    }
+
+    .helper-text {
+      color: var(--color-error);
+    }
+
+    .outline {
+      border-color: var(--color-error);
+    }
+  }
 }
-
-// .text-field.error .clear-btn {
-//   color: var(--color-error);
-// }
-
-// .clear-btn {
-//   transition: color 0.25s ease;
-//   &:hover {
-//     color: var(--color-primary);
-//   }
-// }

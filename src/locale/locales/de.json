@@ -1,4 +1,10 @@
 {
   "HELLO": "Hello!",
-  "WELCOME": "Welcome!"
+  "WELCOME": "Welcome!",
+
+  "validation": {
+    "required": "dieser Wert ist erforderlich",
+    "minlength": "der Wert muss mindestens {{requiredLength}} Zeichen lang sein (aktuell {{actualLength}})",
+    "email": "bitte eine gültige E-Mail-Adresse angeben"
+  }
 }

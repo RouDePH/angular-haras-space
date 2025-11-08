@@ -1,39 +1,70 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable, effect, signal, computed } from '@angular/core';
 import { localeConfig } from './locale.config';
 
-type Translations = Record<string, string>;
+type Translations = Record<string, any>;
 type Params = Record<string, string | number>;
 
 @Injectable({ providedIn: 'root' })
 export class LocaleService {
-  public currentLang: string = localeConfig.default;
-  public locales: string[] = localeConfig.locales;
+  /** 🔹 Текущий язык */
+  readonly currentLang = signal(localeConfig.default);
 
-  private translations$ = new BehaviorSubject<Translations>({});
+  /** 🔹 Список доступных языков */
+  readonly locales = localeConfig.locales;
+
+  /** 🔹 Загруженные переводы */
+  readonly translations = signal<Translations>({});
+
+  /** 🔹 Последний успешно загруженный язык */
   private loadedLang = '';
 
+  constructor() {
+    // Автоматическая загрузка при смене языка
+    effect(() => {
+      const lang = this.currentLang();
+      this.loadTranslations(lang);
+    });
+  }
+
+  /** 🔹 Установка языка */
   setLang(lang: string) {
-    if (lang === this.loadedLang) {
-      this.currentLang = lang;
-      return;
+    if (lang !== this.currentLang()) {
+      this.currentLang.set(lang);
     }
-    this.currentLang = lang;
-    import(`./locales/${lang}.json`)
-      .then((module) => {
-        this.translations$.next(module.default || module);
-        this.loadedLang = lang;
-      })
-      .catch(() => {
-        this.translations$.next({});
-        this.loadedLang = lang;
-      });
   }
 
-  getTranslations(): Observable<Translations> {
-    return this.translations$.asObservable();
+  /** 🔹 Асинхронная подгрузка JSON-файла */
+  private async loadTranslations(lang: string) {
+    if (lang === this.loadedLang) return;
+
+    try {
+      const module = await import(`./locales/${lang}.json`);
+      this.translations.set(module.default || module);
+      this.loadedLang = lang;
+    } catch {
+      console.warn(`[LocaleService] Failed to load translations for "${lang}"`);
+      this.translations.set({});
+      this.loadedLang = lang;
+    }
   }
 
+  /** 🔹 Получить текст перевода */
+  translate(key: string, params?: Params): string {
+    const dict = this.translations();
+    const text = this.resolveKey(dict, key) || key;
+    return this.interpolate(text, params);
+  }
+
+  /** 🔹 Получить реактивную функцию перевода (для шаблонов) */
+  readonly t = computed(() => {
+    const dict = this.translations();
+    return (key: string, params?: Params) => {
+      const text = this.resolveKey(dict, key) || key;
+      return this.interpolate(text, params);
+    };
+  });
+
+  /** 🔹 Вспомогательные методы */
   private resolveKey(obj: Record<string, any>, path: string): string | undefined {
     return path
       .split('.')
@@ -45,11 +76,5 @@ export class LocaleService {
     return text.replace(/\{\{(\w+)\}\}/g, (_, key) =>
       params[key] != null ? String(params[key]) : `{{${key}}}`
     );
-  }
-
-  translate(key: string, params?: Params): string {
-    const translations = this.translations$.getValue();
-    const text = this.resolveKey(translations, key) || key;
-    return this.interpolate(text, params);
   }
 }

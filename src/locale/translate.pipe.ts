@@ -1,28 +1,19 @@
-import { Pipe, PipeTransform, inject, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Pipe, PipeTransform, inject, computed } from '@angular/core';
 import { LocaleService } from './locale.service';
-import { Subscription } from 'rxjs';
 
 @Pipe({
   name: 'translate',
   standalone: true,
-  pure: false,
+  pure: true, // теперь может быть pure, Angular сам следит за сигналами
 })
-export class TranslatePipe implements PipeTransform, OnDestroy {
-  private langService = inject(LocaleService);
-  private cdr = inject(ChangeDetectorRef);
-  private sub: Subscription;
+export class TranslatePipe implements PipeTransform {
+  private readonly locale = inject(LocaleService);
 
-  constructor() {
-    this.sub = this.langService.getTranslations().subscribe(() => {
-      this.cdr.markForCheck();
-    });
-  }
+  // реактивное вычисление перевода
+  private readonly t = computed(() => this.locale.t());
 
-  transform(key: string): string {
-    return this.langService.translate(key);
-  }
-
-  ngOnDestroy() {
-    this.sub.unsubscribe();
+  transform(key: string, params?: Record<string, string | number>): string {
+    const t = this.t();
+    return t(key, params);
   }
 }
