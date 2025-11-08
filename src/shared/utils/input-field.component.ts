@@ -1,4 +1,4 @@
-import { Component, Input, ViewEncapsulation, computed, inject } from '@angular/core';
+import { Component, Input, computed, inject, TemplateRef, ContentChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { useFormContext } from './use-form.context';
@@ -9,19 +9,32 @@ import { LocaleService } from '../../locale/locale.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   styleUrls: ['./input-field.component.scss'],
-  // encapsulation: ViewEncapsulation.None,
   template: `
     <div class="text-field" [class.error]="!formField().isValid() && formField().isTouched()">
-      <div class="input-wrapper">
+      <div
+        class="input-wrapper"
+        [class.has-left-icon]="iconLeft || iconLeftTpl"
+        [class.has-right-icon]="iconRight || iconRightTpl"
+      >
+        <!-- Левая иконка -->
+        <ng-container *ngIf="iconLeft">
+          <span class="icon left" [innerHTML]="iconLeft"></span>
+        </ng-container>
+
+        <!-- Кастомный контент (например, <ng-template #leftIcon> ) -->
+        <ng-container *ngTemplateOutlet="iconLeftTpl"></ng-container>
+
         <input
           class="input-element"
           [id]="name"
           [name]="name"
+          [type]="type"
           [formControl]="formField().control"
           [placeholder]="focused ? placeholder : ''"
           (focus)="focused = true"
           (blur)="focused = false"
         />
+
         <label
           class="input-label"
           [class.filled]="formField().control.value || focused"
@@ -30,13 +43,21 @@ import { LocaleService } from '../../locale/locale.service';
         >
           {{ label }}
         </label>
+
+        <!-- Правая иконка -->
+        <ng-container *ngIf="iconRight">
+          <span class="icon right" [innerHTML]="iconRight"></span>
+        </ng-container>
+
+        <!-- Кастомный шаблон справа -->
+        <ng-container *ngTemplateOutlet="iconRightTpl"></ng-container>
+
         <fieldset class="outline">
           @if(formField().control.value || focused){
           <legend>
             <span style="color: transparent">{{ label }}</span>
           </legend>
-
-          }@else{
+          } @else {
           <legend></legend>
           }
         </fieldset>
@@ -56,6 +77,15 @@ export class InputFieldComponent {
   @Input({ required: true }) name!: string;
   @Input() label?: string;
   @Input() placeholder?: string;
+  @Input() type: string = 'text';
+
+  // иконки в виде HTML-строки (например, SVG)
+  @Input() iconLeft?: string;
+  @Input() iconRight?: string;
+
+  // альтернатива — шаблон (передаваемый из родителя)
+  @ContentChild('iconLeft') iconLeftTpl?: TemplateRef<any>;
+  @ContentChild('iconRight') iconRightTpl?: TemplateRef<any>;
 
   focused = false;
 

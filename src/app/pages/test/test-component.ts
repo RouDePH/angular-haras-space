@@ -25,7 +25,11 @@ import { JsonPipe } from '@angular/common';
         <br />
         <br />
 
-        <app-input-field name="password" label="Password" placeholder="Password" />
+        <app-input-field name="password" label="Password" placeholder="Password">
+          <ng-template #iconRight>
+            <button type="button" class="clear-btn" onclick="alert('asd')">✕</button>
+          </ng-template>
+        </app-input-field>
 
         <br />
         <div>

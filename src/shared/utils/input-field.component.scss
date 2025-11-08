@@ -7,29 +7,79 @@
   width: 100%;
   transition: all 0.25s ease;
 
-  // background-color: red;
-
-  // @include utils.dark {
-  //   background-color: blue;
-  // }
-
+  // ==============================
+  // 🔹 Input wrapper & icon layout
+  // ==============================
   .input-wrapper {
     position: relative;
     display: flex;
     align-items: center;
     font-family: inherit;
-    transition: all 0.25s ease;
+    width: 100%;
+
+    // когда есть левая иконка
+    &.has-left-icon {
+      .input-element {
+        padding-left: 2.75rem;
+      }
+
+      .input-label {
+        left: 2.75rem;
+      }
+
+      .outline legend {
+        margin-left: 2.3rem;
+      }
+    }
+
+    // когда есть правая иконка
+    &.has-right-icon {
+      .input-element {
+        padding-right: 2.75rem;
+      }
+    }
+
+    .icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-secondary);
+      font-size: 1.25rem;
+      width: 2rem;
+      height: 2rem;
+      transition: color 0.2s ease;
+
+      &.left {
+        position: absolute;
+        left: 0.5rem;
+        top: 50%;
+        transform: translateY(-10%);
+        pointer-events: none;
+      }
+
+      &.right {
+        position: absolute;
+        right: 0.5rem;
+        top: 50%;
+        transform: translateY(-48%);
+      }
+    }
   }
 
+  // ==============================
+  // 🔹 Input element
+  // ==============================
   .input-element {
+    flex: 1;
     width: 100%;
+    background: none;
     border: none;
     outline: none;
-    background: none;
-    padding: 1rem 0.75rem 0.5rem 0.75rem;
+    font: inherit;
     font-size: 1rem;
     color: var(--color-text);
     z-index: 2;
+    padding: 1.2rem 0.95rem 0.7rem 0.95rem;
     transition: color 0.25s ease, background-color 0.25s ease, transform 0.15s ease;
 
     &::placeholder {
@@ -43,10 +93,13 @@
     }
   }
 
+  // ==============================
+  // 🔹 Floating label
+  // ==============================
   .input-label {
     position: absolute;
-    left: 0.75rem;
-    top: 1rem;
+    left: 0.95rem;
+    top: 1.2rem;
     color: var(--color-text-secondary);
     font-size: 1rem;
     pointer-events: none;
@@ -66,6 +119,9 @@
     }
   }
 
+  // ==============================
+  // 🔹 Outline / border
+  // ==============================
   .outline {
     position: absolute;
     inset: 0;
@@ -110,15 +166,32 @@
     border-color: var(--color-error);
   }
 
+  // ==============================
+  // 🔹 Helper text
+  // ==============================
   .helper-text {
     margin-top: 0.25rem;
     margin-left: 0.25rem;
     font-size: 0.75rem;
     color: var(--color-error);
+    transition: opacity 0.25s ease, transform 0.25s ease;
 
     .text-field.error & {
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+
+  // ==============================
+  // 🔹 Dark theme (optional)
+  // ==============================
+  @include utils.dark {
+    .input-label {
+      color: var(--color-text-secondary);
+    }
+
+    .outline {
+      border-color: var(--color-border);
     }
   }
 }
