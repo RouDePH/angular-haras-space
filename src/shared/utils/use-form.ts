@@ -29,6 +29,7 @@ export interface Form<T> {
 interface FormField {
   control: FormControl;
   value: Signal<any>;
+  resetValue: () => void;
   isDirty: Signal<boolean>;
   isValid: Signal<boolean>;
   isTouched: Signal<boolean>;
@@ -93,6 +94,11 @@ export function useForm<T extends Record<string, any>>(opts: UseFormOptions<T>):
       const fieldState = {
         control,
         value: fieldValue,
+
+        resetValue: () => {
+          control.patchValue('');
+        },
+
         isDirty: computed(() => {
           fieldValue();
           status();

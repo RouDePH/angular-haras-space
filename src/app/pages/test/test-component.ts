@@ -27,7 +27,7 @@ import { JsonPipe } from '@angular/common';
 
         <app-input-field name="password" label="Password" placeholder="Password">
           <ng-template #iconRight>
-            <button type="button" class="clear-btn" onclick="onClick()">✕</button>
+            <button type="button" class="clear-btn" (click)="onClick()">✕</button>
           </ng-template>
         </app-input-field>
 
@@ -66,8 +66,8 @@ export class TestComponent {
     },
   });
 
-  onClick(){
-    alert('123')
+  onClick() {
+    this.form.fields.password.resetValue();
   }
 
   async onSubmit({ password, email }: { email: string; password: string }) {
