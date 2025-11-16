@@ -1,0 +1,71 @@
+name: CI/CD - Angular App to Docker Hub & Fleet
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  packages: write
+  id-token: write
+
+env:
+  IMAGE_NAME: serhiiharas/angular-app
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Get current version
+        id: version
+        run: |
+          git fetch --tags
+          TAG=$(git tag --sort=-v:refname | head -n 1)
+          if [[ -z "$TAG" ]]; then TAG="v1.0.0"; fi
+          echo "CURRENT=$TAG" >> $GITHUB_ENV
+          NEW=$(echo $TAG | awk -F. -v OFS=. '{$NF++;print}')
+          echo "NEW=$NEW" >> $GITHUB_ENV
+          echo "Current: $TAG, New: $NEW"
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install & Build Angular App
+        run: |
+          npm ci
+          npm run build --if-present
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & Push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.IMAGE_NAME }}:latest
+            ${{ env.IMAGE_NAME }}:${{ env.NEW }}
+
+      - name: Create new git tag
+        run: |
+          git config user.name "github-actions"
+          git config user.email "ci@github"
+          git tag ${{ env.NEW }}
+          git push origin ${{ env.NEW }}
+
+      - name: Update Fleet manifest
+        run: |
+          sed -i "s|${{ env.IMAGE_NAME }}:.*|${{ env.IMAGE_NAME }}:${{ env.NEW }}|g" fleet/angular/angular-app.yaml
+          git add fleet/angular/angular-app.yaml
+          git commit -m "chore: bump image to ${{ env.NEW }} [skip ci]" || echo "No changes"
+          git push
