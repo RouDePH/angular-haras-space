@@ -1,4 +1,4 @@
 defaultNamespace: angular
-helm: {}
+helm: false
 paths:
   - ./fleet/angular-app.yaml
