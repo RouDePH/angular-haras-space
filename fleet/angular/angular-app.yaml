@@ -4,7 +4,7 @@ metadata:
   name: angular-app
   namespace: default
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: angular-app
@@ -15,10 +15,16 @@ spec:
     spec:
       containers:
         - name: angular-app
-          image: haras/angular-app:latest
+          image: serhiiharas/angular-app:latest
           ports:
             - containerPort: 80
-
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
 ---
 apiVersion: v1
 kind: Service
@@ -26,13 +32,12 @@ metadata:
   name: angular-app
   namespace: default
 spec:
+  type: ClusterIP
   selector:
     app: angular-app
   ports:
     - port: 80
       targetPort: 80
-  type: ClusterIP
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -40,14 +45,10 @@ metadata:
   name: angular-app
   namespace: default
   annotations:
-    kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.class: "nginx"
 spec:
-  tls:
-    - hosts:
-        - app.haras.space
-      secretName: rancher-tls
   rules:
-    - host: app.haras.space
+    - host: angular.haras.space
       http:
         paths:
           - path: /
@@ -57,3 +58,7 @@ spec:
                 name: angular-app
                 port:
                   number: 80
+  tls:
+    - hosts:
+        - angular.haras.space
+      secretName: rancher-tls
