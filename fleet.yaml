@@ -1,0 +1,9 @@
+defaultNamespace: angular
+targets:
+  - name: local
+    clusterSelector:
+      matchExpressions:
+        - key: provider.cattle.io
+          operator: NotIn
+          values:
+            - harvester
