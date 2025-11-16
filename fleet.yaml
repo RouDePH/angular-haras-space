@@ -1,4 +1,13 @@
 defaultNamespace: angular
+
+paths:
+  - fleet
+
+interval: 1m
+
+correctDrift:
+  enabled: true
+
 targets:
   - name: local
     clusterSelector:
