@@ -1,18 +1,4 @@
-defaultNamespace: angular
+namespace: angular
 
 paths:
-  - fleet
-
-interval: 1m
-
-correctDrift:
-  enabled: true
-
-targets:
-  - name: local
-    clusterSelector:
-      matchExpressions:
-        - key: provider.cattle.io
-          operator: NotIn
-          values:
-            - harvester
+  - ./fleet/angular-app.yaml
