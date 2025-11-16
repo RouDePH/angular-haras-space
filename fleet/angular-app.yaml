@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: angular-app
-          image: serhiiharas/angular-app:v1.0.8
+          image: serhiiharas/angular-app:latest
           ports:
             - containerPort: 80
           resources:
@@ -50,6 +50,10 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   ingressClassName: nginx
+  tls:
+    - hosts:
+        - angular.haras.space
+      secretName: rancher-tls
   rules:
     - host: angular.haras.space
       http:
