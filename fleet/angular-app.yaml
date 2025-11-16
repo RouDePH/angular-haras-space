@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: angular-app
-          image: serhiiharas/angular-app:v1.0.14
+          image: serhiiharas/angular-app:v1.0.15
           ports:
             - containerPort: 80
           resources:
