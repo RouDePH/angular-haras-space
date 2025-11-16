@@ -65,7 +65,7 @@ jobs:
 
       - name: Update Fleet manifest
         run: |
-          sed -i "s|${{ env.IMAGE_NAME }}:.*|${{ env.IMAGE_NAME }}:${{ env.NEW }}|g" fleet/angular/angular-app.yaml
-          git add fleet/angular/angular-app.yaml
+          sed -i "s|${{ env.IMAGE_NAME }}:.*|${{ env.IMAGE_NAME }}:${{ env.NEW }}|g" fleet/angular-app.yaml
+          git add fleet/angular-app.yaml
           git commit -m "chore: bump image to ${{ env.NEW }} [skip ci]" || echo "No changes"
           git push
