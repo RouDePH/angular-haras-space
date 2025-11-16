@@ -1,0 +1,4 @@
+defaultNamespace: angular
+
+paths:
+  - ./angular-app.yaml

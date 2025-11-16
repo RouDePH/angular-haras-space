@@ -1,4 +1,0 @@
-namespace: angular
-
-paths:
-  - ./fleet/angular-app.yaml
