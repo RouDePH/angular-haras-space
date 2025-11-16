@@ -1,47 +1,47 @@
-name: Deploy Next.JS Application
+# name: Deploy Next.JS Application
 
-on:
-  push:
-    branches:
-      - main
+# on:
+#   push:
+#     branches:
+#       - main
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: "22"
 
-      - name: Cache npm
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-angular-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: ${{ runner.os }}-angular-${{ hashFiles('**/package-lock.json') }}
-      - name: Install dependencies
-        run: npm ci
-      - name: Build Angular app
-        run: |
-          npm run build
-      - name: Add nonce to modulepreload links
-        run: chmod +x csp-nonces.sh & ./csp-nonces.sh
-      - name: Set up SSH and known_hosts
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-        run: |
-          mkdir -p ~/.ssh
-          echo "${SSH_PRIVATE_KEY}" > ~/.ssh/private_key
-          chmod 600 ~/.ssh/private_key
-          ssh-keyscan ${SSH_HOST} >> ~/.ssh/known_hosts
-      - name: Deploy to Server
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_USER: ${{ secrets.SSH_USER }}
-        run: |
-          rsync -vcarhO -e "ssh -i ~/.ssh/private_key" ~/work/angular-haras-space/angular-haras-space/dist/ng-test-project/browser/* ${SSH_USER}@${SSH_HOST}:/opt/haras-space-angular/
+#       - name: Cache npm
+#         uses: actions/cache@v4
+#         with:
+#           path: ~/.npm
+#           key: ${{ runner.os }}-angular-${{ hashFiles('**/package-lock.json') }}
+#           restore-keys: ${{ runner.os }}-angular-${{ hashFiles('**/package-lock.json') }}
+#       - name: Install dependencies
+#         run: npm ci
+#       - name: Build Angular app
+#         run: |
+#           npm run build
+#       - name: Add nonce to modulepreload links
+#         run: chmod +x csp-nonces.sh & ./csp-nonces.sh
+#       - name: Set up SSH and known_hosts
+#         env:
+#           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+#           SSH_HOST: ${{ secrets.SSH_HOST }}
+#         run: |
+#           mkdir -p ~/.ssh
+#           echo "${SSH_PRIVATE_KEY}" > ~/.ssh/private_key
+#           chmod 600 ~/.ssh/private_key
+#           ssh-keyscan ${SSH_HOST} >> ~/.ssh/known_hosts
+#       - name: Deploy to Server
+#         env:
+#           SSH_HOST: ${{ secrets.SSH_HOST }}
+#           SSH_USER: ${{ secrets.SSH_USER }}
+#         run: |
+#           rsync -vcarhO -e "ssh -i ~/.ssh/private_key" ~/work/angular-haras-space/angular-haras-space/dist/ng-test-project/browser/* ${SSH_USER}@${SSH_HOST}:/opt/haras-space-angular/
