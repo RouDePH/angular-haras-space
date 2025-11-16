@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: angular-app
-  namespace: default
+  namespace: angular
 spec:
   replicas: 1
   selector:
@@ -15,13 +15,10 @@ spec:
     spec:
       containers:
         - name: angular-app
-          image: serhiiharas/angular-app:v1.0.3
+          image: serhiiharas/angular-app:latest
           ports:
             - containerPort: 80
           resources:
-            requests:
-              cpu: 50m
-              memory: 64Mi
             limits:
               cpu: 200m
               memory: 256Mi
@@ -30,23 +27,24 @@ apiVersion: v1
 kind: Service
 metadata:
   name: angular-app
-  namespace: default
+  namespace: angular
 spec:
-  type: ClusterIP
   selector:
     app: angular-app
   ports:
     - port: 80
       targetPort: 80
+  type: ClusterIP
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: angular-app
-  namespace: default
+  namespace: angular
   annotations:
-    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
   rules:
     - host: angular.haras.space
       http:
@@ -58,7 +56,3 @@ spec:
                 name: angular-app
                 port:
                   number: 80
-  tls:
-    - hosts:
-        - angular.haras.space
-      secretName: rancher-tls
