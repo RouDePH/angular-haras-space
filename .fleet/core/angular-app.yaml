@@ -41,9 +41,6 @@ kind: Ingress
 metadata:
   name: angular-app
   namespace: core
-  annotations:
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      try_files $uri $uri/ /index.html;
 spec:
   ingressClassName: nginx
   tls:
