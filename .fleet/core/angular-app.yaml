@@ -20,8 +20,8 @@ spec:
             - containerPort: 80
           resources:
             limits:
-              cpu: 200m
-              memory: 256Mi
+              cpu: "200m"
+              memory: "256Mi"
 ---
 apiVersion: v1
 kind: Service
@@ -42,7 +42,8 @@ metadata:
   name: angular-app
   namespace: core
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      try_files $uri $uri/ /index.html;
 spec:
   ingressClassName: nginx
   tls:
