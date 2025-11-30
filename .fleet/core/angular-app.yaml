@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
         - name: angular-app
-          image: serhiiharas/angular-app:v1.0.20
+          image: serhiiharas/angular-app:v1.0.25
           imagePullPolicy: Always
 
           ports:
